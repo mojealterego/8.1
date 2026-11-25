@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <remote name="omnicore-github" fetch="https://github.com/" />
+  <remove-project name="platform/frameworks/base" />
+  <project name="mojealterego/8.1"
+           path="frameworks/base"
+           remote="omnicore-github"
+           revision="4a9acdc305c27336f8ef74505800bcc541f6052e" />
+</manifest>
