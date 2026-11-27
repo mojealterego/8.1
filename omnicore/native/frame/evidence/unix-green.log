@@ -1,0 +1,19 @@
+test_fragmented_response (test_unix_client.NativeUnixTests.test_fragmented_response) ... ok
+test_invalid_arguments (test_unix_client.NativeUnixTests.test_invalid_arguments) ... ok
+test_maximum_frame_both_directions (test_unix_client.NativeUnixTests.test_maximum_frame_both_directions) ... ok
+test_missing_socket (test_unix_client.NativeUnixTests.test_missing_socket) ... ok
+test_nominal (test_unix_client.NativeUnixTests.test_nominal) ... ok
+test_oversized_response_length (test_unix_client.NativeUnixTests.test_oversized_response_length) ... ok
+test_response_exceeds_capacity (test_unix_client.NativeUnixTests.test_response_exceeds_capacity) ... ok
+test_timeout (test_unix_client.NativeUnixTests.test_timeout) ... ok
+test_total_deadline_across_fragments (test_unix_client.NativeUnixTests.test_total_deadline_across_fragments) ... ok
+test_truncated_body (test_unix_client.NativeUnixTests.test_truncated_body) ... ok
+test_truncated_header (test_unix_client.NativeUnixTests.test_truncated_header) ... ok
+test_wrong_label_no_request_sent (test_unix_client.NativeUnixTests.test_wrong_label_no_request_sent) ... ok
+test_wrong_uid_no_request_sent (test_unix_client.NativeUnixTests.test_wrong_uid_no_request_sent) ... ok
+test_zero_response_length (test_unix_client.NativeUnixTests.test_zero_response_length) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.410s
+
+OK
