@@ -100,7 +100,10 @@ def decode_request(raw: bytes, principal: CallerIdentity) -> RpcRequest:
         raise ContractError("invalid_deadline")
     if data["reply_to"] != "device/local/session":
         raise ContractError("invalid_reply_destination")
-    payload = data["payload"].encode("utf-8")
+    try:
+        payload = data["payload"].encode("utf-8")
+    except UnicodeEncodeError as exc:
+        raise ContractError("invalid_payload_encoding") from exc
     if len(payload) > MAX_PAYLOAD_BYTES:
         raise ContractError("payload_too_large")
     stated = data["payload_sha256"]

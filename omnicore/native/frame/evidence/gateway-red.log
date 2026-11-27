@@ -1,0 +1,29 @@
+test_capacity_denies_new_requests (test_gateway_e2e.GatewayE2E.test_capacity_denies_new_requests) ... ok
+test_local_intent (test_gateway_e2e.GatewayE2E.test_local_intent) ... ok
+test_policy_denies_before_admission (test_gateway_e2e.GatewayE2E.test_policy_denies_before_admission) ... ok
+test_replay_persists_across_server_restart (test_gateway_e2e.GatewayE2E.test_replay_persists_across_server_restart) ... ok
+test_status_truthful (test_gateway_e2e.GatewayE2E.test_status_truthful) ... ok
+test_surrogate_payload_denied_and_service_survives (test_gateway_e2e.GatewayE2E.test_surrogate_payload_denied_and_service_survives) ... FAIL
+test_unconfigured_remote_handler (test_gateway_e2e.GatewayE2E.test_unconfigured_remote_handler) ... ok
+test_wrong_server_identity_sends_no_request (test_gateway_e2e.GatewayE2E.test_wrong_server_identity_sends_no_request) ... ok
+
+======================================================================
+FAIL: test_surrogate_payload_denied_and_service_survives (test_gateway_e2e.GatewayE2E.test_surrogate_payload_denied_and_service_survives)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/ocrs/omnicore/native/frame/tests/test_gateway_e2e.py", line 146, in test_surrogate_payload_denied_and_service_survives
+    self.assertEqual((body['status'], body['reason']), ('DENY', 'invalid_payload_encoding'))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: ('DENY', 'invalid_frame') != ('DENY', 'invalid_payload_encoding')
+
+First differing element 1:
+'invalid_frame'
+'invalid_payload_encoding'
+
+- ('DENY', 'invalid_frame')
++ ('DENY', 'invalid_payload_encoding')
+
+----------------------------------------------------------------------
+Ran 8 tests in 1.993s
+
+FAILED (failures=1)
