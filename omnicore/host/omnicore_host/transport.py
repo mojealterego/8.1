@@ -9,6 +9,7 @@ from dataclasses import dataclass
 import json
 import socket
 import struct
+import time
 from typing import Mapping
 
 from .rpc import CallerIdentity, MAX_FRAME_BYTES, SCHEMA
@@ -55,13 +56,20 @@ class IdentityRegistry:
         return principal
 
 
-def _read_exact(sock: socket.socket, length: int) -> bytes:
+def _read_exact(sock: socket.socket, length: int, deadline: float) -> bytes:
+    """Read a bounded frame using a single monotonic deadline."""
     out = bytearray()
     while len(out) < length:
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise TimeoutError('frame_deadline_exceeded')
+        sock.settimeout(remaining)
         chunk = sock.recv(length - len(out))
         if not chunk:
             raise EOFError('truncated_frame')
         out.extend(chunk)
+    if time.monotonic() >= deadline:
+        raise TimeoutError('frame_deadline_exceeded')
     return bytes(out)
 
 
@@ -75,13 +83,13 @@ class UnixRpcEndpoint:
 
     def serve_connection(self, conn: socket.socket) -> None:
         try:
-            conn.settimeout(self.timeout_seconds)
+            deadline = time.monotonic() + self.timeout_seconds
             cred = get_peer_credential(conn)
             principal = self.registry.authenticate(cred)
-            (length,) = struct.unpack('!I', _read_exact(conn, 4))
+            (length,) = struct.unpack('!I', _read_exact(conn, 4, deadline))
             if not 0 < length <= MAX_FRAME_BYTES:
                 raise ValueError('invalid_frame')
-            raw = _read_exact(conn, length)
+            raw = _read_exact(conn, length, deadline)
             response = self.gateway.handle(raw, principal)
         except AuthError as exc:
             response = {'schema':SCHEMA,'status':'DENY','reason':str(exc)}
@@ -90,4 +98,7 @@ class UnixRpcEndpoint:
         wire = json.dumps(response,ensure_ascii=False,separators=(',',':'),allow_nan=False).encode('utf-8')
         if len(wire) > MAX_FRAME_BYTES:
             wire = b'{"schema":"omnicore.rpc.v1","status":"DENY","reason":"response_too_large"}'
+        # A separate bounded write window allows an explicit denial after a read timeout.
+        # Gateway/handler execution time is not bounded by this transport deadline.
+        conn.settimeout(self.timeout_seconds)
         conn.sendall(struct.pack('!I', len(wire)) + wire)

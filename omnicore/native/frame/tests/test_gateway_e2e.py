@@ -4,10 +4,12 @@ import json
 import os
 from pathlib import Path
 import socket
+import struct
 import subprocess
 import sys
 import tempfile
 import threading
+import time
 import unittest
 from contextlib import contextmanager
 
@@ -45,10 +47,11 @@ class GatewayE2E(unittest.TestCase):
                                        frozenset({'intent.local', 'system.status', 'rag.query'}))
 
     @contextmanager
-    def server(self, *, capacity=10):
+    def server(self, *, capacity=10, timeout_seconds=2.0):
         store = ReplayStore(self.root / 'replay.db', capacity=capacity)
         gate = Gateway(store, DigitalLifeAdapter(local_handlers()))
-        endpoint = UnixRpcEndpoint(gate, IdentityRegistry({(os.getuid(), self.label): self.principal}))
+        endpoint = UnixRpcEndpoint(gate, IdentityRegistry({(os.getuid(), self.label): self.principal}),
+                                   timeout_seconds=timeout_seconds)
         server = LocalHostServer(self.path, endpoint)
         stop, started = threading.Event(), threading.Event()
         errors = []
@@ -146,6 +149,28 @@ class GatewayE2E(unittest.TestCase):
             self.assertEqual((body['status'], body['reason']), ('DENY', 'invalid_payload_encoding'))
             self.assertEqual(store.count(), 0)
             self.assertEqual(self.response(self.request())['status'], 'OK')
+
+    def test_fragmented_request_cannot_extend_read_deadline(self):
+        with self.server(timeout_seconds=0.2) as store:
+            raw = self.request()
+            with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as conn:
+                conn.settimeout(2)
+                conn.connect(str(self.path))
+                conn.sendall(struct.pack('!I', len(raw))[:2])
+                # Each pause is below 200 ms, but the complete frame is late.
+                for part in (struct.pack('!I', len(raw))[2:], raw[:1], raw[1:]):
+                    time.sleep(0.12)
+                    try:
+                        conn.sendall(part)
+                    except (BrokenPipeError, ConnectionResetError):
+                        break
+                try:
+                    while conn.recv(65536):
+                        pass
+                except ConnectionResetError:
+                    pass
+            self.assertEqual(store.count(), 0)
+            self.assertEqual(self.response(self.request(2))['status'], 'OK')
 
 
 if __name__ == '__main__':
