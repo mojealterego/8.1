@@ -1,0 +1,39 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+___________________ test_late_handler_never_returns_success ____________________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_late_handler_never_return0')
+
+    def test_late_handler_never_returns_success(tmp_path):
+        def handler(req, principal):
+            time.sleep(0.03)
+            return {'action': 'open_gallery'}
+        gate = Gateway(ReplayStore(tmp_path/'replay.db'), DigitalLifeAdapter({'intent.local': handler}))
+        result = gate.handle(packet(10), PRINCIPAL)
+>       assert (result['status'], result.get('reason')) == ('OFFLINE', 'deadline_exceeded')
+E       AssertionError: assert ('OK', None) == ('OFFLINE', '...ine_exceeded')
+E         
+E         At index 0 diff: 'OK' != 'OFFLINE'
+E         
+E         Full diff:
+E           (
+E         -     'OFFLINE',
+E         -     'deadline_exceeded',
+E         +     'OK',
+E         +     None,
+E           )
+
+tests/test_execution_deadline.py:29: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_execution_deadline.py::test_late_handler_never_returns_success - AssertionError: assert ('OK', None) == ('OFFLINE', '...ine_exceeded')
+  
+  At index 0 diff: 'OK' != 'OFFLINE'
+  
+  Full diff:
+    (
+  -     'OFFLINE',
+  -     'deadline_exceeded',
+  +     'OK',
+  +     None,
+    )
+1 failed in 0.14s
