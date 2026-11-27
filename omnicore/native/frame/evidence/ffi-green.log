@@ -1,0 +1,13 @@
+test_absent_socket (test_ffi_abi.AbiTests.test_absent_socket) ... ok
+test_capacity (test_ffi_abi.AbiTests.test_capacity) ... ok
+test_invalid_arguments (test_ffi_abi.AbiTests.test_invalid_arguments) ... ok
+test_invalid_response (test_ffi_abi.AbiTests.test_invalid_response) ... ok
+test_partial_response_erased (test_ffi_abi.AbiTests.test_partial_response_erased) ... ok
+test_success (test_ffi_abi.AbiTests.test_success) ... ok
+test_untrusted_label (test_ffi_abi.AbiTests.test_untrusted_label) ... ok
+test_untrusted_uid (test_ffi_abi.AbiTests.test_untrusted_uid) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.250s
+
+OK

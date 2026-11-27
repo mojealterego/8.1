@@ -4,6 +4,9 @@ use std::os::raw::{c_int, c_uchar, c_uint};
 
 pub const MAX_FRAME_BYTES: usize = 65_536;
 
+#[cfg(any(target_os = "linux", target_os = "android"))]
+pub mod unix;
+
 extern "C" {
     fn ocr_frame_encode(length: c_uint, header: *mut c_uchar) -> c_int;
     fn ocr_frame_decode(header: *const c_uchar, length: *mut c_uint) -> c_int;
