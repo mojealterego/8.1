@@ -1,0 +1,7 @@
+# Disabled until the target policy and full system image have been verified.
+service omnicore_healthd /system/bin/omnicore_healthd
+    class late_start
+    user nobody
+    group nobody
+    disabled
+    socket omnicore_health stream 0660 nobody system

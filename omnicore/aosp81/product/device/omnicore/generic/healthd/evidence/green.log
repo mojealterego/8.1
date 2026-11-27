@@ -1,0 +1,17 @@
+test_already_listening_rejected (test_healthd.HealthdTests.test_already_listening_rejected) ... ok
+test_closed_descriptor (test_healthd.HealthdTests.test_closed_descriptor) ... ok
+test_configuration_fail_closed (test_healthd.HealthdTests.test_configuration_fail_closed) ... ok
+test_correct_peer_and_repeated_requests (test_healthd.HealthdTests.test_correct_peer_and_repeated_requests) ... ok
+test_missing_descriptor (test_healthd.HealthdTests.test_missing_descriptor) ... ok
+test_noncanonical_descriptor (test_healthd.HealthdTests.test_noncanonical_descriptor) ... ok
+test_regular_file_descriptor (test_healthd.HealthdTests.test_regular_file_descriptor) ... ok
+test_unbound_descriptor (test_healthd.HealthdTests.test_unbound_descriptor) ... ok
+test_wrong_label (test_healthd.HealthdTests.test_wrong_label) ... ok
+test_wrong_path (test_healthd.HealthdTests.test_wrong_path) ... ok
+test_wrong_socket_type (test_healthd.HealthdTests.test_wrong_socket_type) ... ok
+test_wrong_uid (test_healthd.HealthdTests.test_wrong_uid) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.288s
+
+OK

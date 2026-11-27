@@ -1,0 +1,2 @@
+/system/bin/omnicore_healthd    u:object_r:omnicore_healthd_exec:s0
+/dev/socket/omnicore_health    u:object_r:omnicore_health_socket:s0

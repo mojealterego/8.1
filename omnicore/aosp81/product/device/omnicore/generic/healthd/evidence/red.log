@@ -1,0 +1,24 @@
+clang: error: no such file or directory: '/tmp/omni-init/healthd/healthd.c'
+clang: error: no input files
+setUpClass (test_healthd.HealthdTests) ... ERROR
+
+======================================================================
+ERROR: setUpClass (test_healthd.HealthdTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/omni-init/healthd/tests/test_healthd.py", line 19, in setUpClass
+    subprocess.run(['clang', '-std=c11', '-Wall', '-Wextra', '-Werror',
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    '-fsanitize=address,undefined', '-DOMNI_HOST_TEST',
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    str(ROOT/'healthd.c'), '-o', str(cls.bin)], check=True)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['clang', '-std=c11', '-Wall', '-Wextra', '-Werror', '-fsanitize=address,undefined', '-DOMNI_HOST_TEST', '/tmp/omni-init/healthd/healthd.c', '-o', '/tmp/tmp__9zoibi/healthd']' returned non-zero exit status 1.
+
+----------------------------------------------------------------------
+Ran 0 tests in 0.074s
+
+FAILED (errors=1)

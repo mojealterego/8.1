@@ -1,0 +1,9 @@
+# Candidate platform-private policy for Oreo; compile against the full AOSP tree.
+type omnicore_healthd, domain, coredomain;
+type omnicore_healthd_exec, exec_type, file_type, system_file_type;
+type omnicore_health_socket, file_type;
+init_daemon_domain(omnicore_healthd)
+
+# The service uses an init-created socket and no TCP/IP transport.
+allow omnicore_healthd self:unix_stream_socket { accept listen read write getattr getopt };
+unix_socket_connect(system_server, omnicore_health, omnicore_healthd)
