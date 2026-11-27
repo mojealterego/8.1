@@ -1,0 +1,21 @@
+test_nano_resources (unittest.loader._FailedTest.test_nano_resources) ... ERROR
+
+======================================================================
+ERROR: test_nano_resources (unittest.loader._FailedTest.test_nano_resources)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_nano_resources
+Traceback (most recent call last):
+  File "/usr/lib/python3.13/unittest/loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/usr/lib/python3.13/unittest/loader.py", line 339, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "/tmp/omni-nano/tests/test_nano_resources.py", line 9, in <module>
+    from omnicore_host.nano_resources import NanoGovernor, ResourceDenied, read_available_bytes, apply_worker_limits, MiB
+ModuleNotFoundError: No module named 'omnicore_host.nano_resources'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)

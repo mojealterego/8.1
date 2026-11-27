@@ -6,12 +6,14 @@ import sys
 
 # -I excludes the script directory; import only from the installed trusted tree.
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from omnicore_host.local_services import local_handlers
-from omnicore_host.rpc import CallerIdentity, RpcRequest
+from omnicore_host.nano_resources import apply_worker_limits
 
 
 def main() -> int:
     try:
+        apply_worker_limits()
+        from omnicore_host.local_services import local_handlers
+        from omnicore_host.rpc import CallerIdentity, RpcRequest
         raw = sys.stdin.buffer.read(262_145)
         if len(raw) > 262_144:
             return 2
