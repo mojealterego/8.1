@@ -10,9 +10,10 @@ import hashlib
 import json
 from pathlib import Path, PurePosixPath
 import re
-import subprocess
 import sys
 from xml.etree import ElementTree as ET
+
+from git_checkout import CheckoutError, checked_head
 
 OWNER_SHA = '4a9acdc305c27336f8ef74505800bcc541f6052e'
 OWNER_NAME = 'mojealterego/8.1'
@@ -112,12 +113,9 @@ def validate_lock_manifest(path: Path, *, min_projects: int = MIN_FULL_MANIFEST_
 
 def _git_head(project: Path) -> str:
     try:
-        return subprocess.check_output(
-            ['git', '-C', str(project), 'rev-parse', '--verify', 'HEAD'],
-            stderr=subprocess.DEVNULL, timeout=10, text=True,
-        ).strip()
-    except (OSError, subprocess.CalledProcessError, subprocess.TimeoutExpired) as exc:
-        raise GateError('git_head_unavailable:' + str(project)) from exc
+        return checked_head(project)
+    except CheckoutError as exc:
+        raise GateError(str(exc) + ':' + str(project)) from exc
 
 
 def verify_checkout(root: Path, lock_path: Path | None = None, *, min_projects: int = MIN_FULL_MANIFEST_PROJECTS) -> dict:
