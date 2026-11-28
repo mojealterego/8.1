@@ -1,0 +1,21 @@
+test_neuromorphic (unittest.loader._FailedTest.test_neuromorphic) ... ERROR
+
+======================================================================
+ERROR: test_neuromorphic (unittest.loader._FailedTest.test_neuromorphic)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_neuromorphic
+Traceback (most recent call last):
+  File "/usr/lib/python3.13/unittest/loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/usr/lib/python3.13/unittest/loader.py", line 339, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "/mnt/data/ocrs-neuro/omnicore/host/tests/test_neuromorphic.py", line 4, in <module>
+    from omnicore_host.neuromorphic import OmegaXNeuromorphicVArch, FrameStatus, Q
+ModuleNotFoundError: No module named 'omnicore_host.neuromorphic'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)

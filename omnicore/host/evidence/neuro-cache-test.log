@@ -1,0 +1,25 @@
+test_bad_input_does_not_mutate (test_neuromorphic.NeuroTests.test_bad_input_does_not_mutate) ... ok
+test_cache_capacity_partition (test_neuromorphic.NeuroTests.test_cache_capacity_partition) ... ok
+test_clock_regression_fails_closed (test_neuromorphic.NeuroTests.test_clock_regression_fails_closed) ... ok
+test_deterministic_trajectory_and_cache_equivalence (test_neuromorphic.NeuroTests.test_deterministic_trajectory_and_cache_equivalence) ... FAIL
+test_dimensions_and_bounds (test_neuromorphic.NeuroTests.test_dimensions_and_bounds) ... ok
+test_feedback_affects_next_tick (test_neuromorphic.NeuroTests.test_feedback_affects_next_tick) ... ok
+test_rollback_when_clock_exhausted (test_neuromorphic.NeuroTests.test_rollback_when_clock_exhausted) ... ok
+test_rollback_when_work_exhausted (test_neuromorphic.NeuroTests.test_rollback_when_work_exhausted) ... ok
+test_serialized_concurrent_calls (test_neuromorphic.NeuroTests.test_serialized_concurrent_calls) ... ok
+test_sparse_compute_count (test_neuromorphic.NeuroTests.test_sparse_compute_count) ... ok
+test_validate_configuration (test_neuromorphic.NeuroTests.test_validate_configuration) ... ok
+
+======================================================================
+FAIL: test_deterministic_trajectory_and_cache_equivalence (test_neuromorphic.NeuroTests.test_deterministic_trajectory_and_cache_equivalence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/ocrs-neuro/omnicore/host/tests/test_neuromorphic.py", line 32, in test_deterministic_trajectory_and_cache_equivalence
+    self.assertGreater(a.cache_info().hits,0)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 not greater than 0
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.069s
+
+FAILED (failures=1)
