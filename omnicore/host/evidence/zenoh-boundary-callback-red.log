@@ -1,0 +1,24 @@
+.................FF                                                      [100%]
+=================================== FAILURES ===================================
+___________________________ test_queryable_contract ____________________________
+
+setup = (<cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7fb24638f530>, <cryptography.hazmat...eway object at 0x7fb246429630>, 1795868823, <omnicore_host.zenoh_boundary.SignedIngress object at 0x7fb246429810>, ...)
+
+    def test_queryable_contract(setup):
+>       from omnicore_host.zenoh_boundary import declare_queryables
+E       ImportError: cannot import name 'declare_queryables' from 'omnicore_host.zenoh_boundary' (/tmp/omni-zenoh/omnicore_host/zenoh_boundary.py)
+
+tests/test_signed_zenoh.py:97: ImportError
+__________________________ test_declaration_rollback ___________________________
+
+setup = (<cryptography.hazmat.bindings._rust.openssl.ed25519.Ed25519PrivateKey object at 0x7fb24638f230>, <cryptography.hazmat...eway object at 0x7fb246406b70>, 1795868823, <omnicore_host.zenoh_boundary.SignedIngress object at 0x7fb246406850>, ...)
+
+    def test_declaration_rollback(setup):
+>       from omnicore_host.zenoh_boundary import declare_queryables
+E       ImportError: cannot import name 'declare_queryables' from 'omnicore_host.zenoh_boundary' (/tmp/omni-zenoh/omnicore_host/zenoh_boundary.py)
+
+tests/test_signed_zenoh.py:130: ImportError
+=========================== short test summary info ============================
+FAILED tests/test_signed_zenoh.py::test_queryable_contract - ImportError: cannot import name 'declare_queryables' from 'omnicore_host.zenoh_boundary' (/tmp/omni-zenoh/omnicore_host/zenoh_boundary.py)
+FAILED tests/test_signed_zenoh.py::test_declaration_rollback - ImportError: cannot import name 'declare_queryables' from 'omnicore_host.zenoh_boundary' (/tmp/omni-zenoh/omnicore_host/zenoh_boundary.py)
+2 failed, 17 passed in 0.27s

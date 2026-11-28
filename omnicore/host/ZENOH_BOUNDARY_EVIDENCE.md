@@ -1,0 +1,21 @@
+# Signed Zenoh query boundary — implementation evidence
+
+Base: bc71dcffbda935490ec6c511d9524b8657384f7d. Linux x86_64, Python 3.13.5, pytest 9.0.2, cryptography 46.0.4, SQLite 3.46.1, Git 2.47.3. Seven reconstructed original files verified by git hash-object: __init__ 12acb4c29f3ac536b97b959764a7a640da29ae0c; adapter bc8db0fa974d1351d1dcf7f88c25792d3bd6e324; deadline 4b5695521bc9cc46010d1a1d7eaeb4b3d80bb31b; gateway 1626f6edd80ce6cb5505f83585ef3cbacc217f1b; local_services e6e1d9429c9c560c5ac48b0cf084d236f46fc167; replay 24b4e44b197ffc608ec49be582a5c7ef4e7678ef; rpc 8698e73677e862749427ffbf1db2e95dbc782c2a.
+
+Reproduce from omnicore/host:
+```
+PYTHONPATH=. python3 -m pytest -q tests/test_signed_zenoh.py
+python3 -m compileall -q omnicore_host tests
+```
+Actual commands in reconstructed subset used pytest -q tests, containing only the new test file. RED: missing module, exit 2, collection error. Intermediate GREEN: 17 passed (0.24s). Callback RED: 2 failed, 17 passed (0.27s), missing declaration API. Final GREEN: 19 passed, 0.21s, exit 0; compileall exit 0. Raw logs are in evidence/zenoh-boundary-{red,callback-red,green}.log. Test IDs: test_real_gateway_and_signed_reply; test_replay_after_recreation_and_key_rotation; test_denied_before_admission (13 modes: tampered, wrong_key, wrong_tenant, wrong_peer, wrong_node, wrong_cap, wildcard, expired, far_future, forged_source, forged_capability, oversize, truncated); test_response_bound_to_original_request_and_key; test_short_replay_window_rejected; test_queryable_contract; test_declaration_rollback.
+
+Mode HYBRID: real Ed25519 (ephemeral randomly generated keys), actual Gateway/SQLite and offline handler, fixed expiry snapshot in test fixture, deterministic invalid-message scenarios. Two declaration tests use a session/query API contract double, not an actual Zenoh network simulator. No runtime Zenoh installed; Rust and NDK unavailable. No old suite rerun. No physical network disruption tested.
+
+Wire contract: exact route omnicore/v1/{node}/{tenant}/{peer}/{capability}. Request: SHA-256(public key raw)[32] | expiry unix seconds big-endian[8] | Ed25519 signature[64] | RPC JSON bytes[1..65536]. Signature domain OCRS-ZQ1 NUL, route length uint16 big-endian, ASCII route, first 40 header bytes, RPC bytes. Reply: signature[64] | JSON bytes; signature domain OCRS-ZR1 NUL, route length, route, SHA-256(original complete signed request), reply bytes. Keys pinned out of band. No wildcards; exact route equality to authorized principal and validated capability required. Expiry must be in (now, now+30]; replay retention must exceed 30 seconds. Replay safety requires consistent trustworthy wall clock, stable peer/tenant IDs, and one persistent replay DB per logical node. No claim of distributed exactly-once, HA, secure time or anti-rollback of the DB. Key rotation requires replacement of ingress and removal of old declarations under deployment control; old in-flight handlers are not cancelled. Signature authenticity is not confidentiality, and verify_reply validates signature and dict type, not full semantic schema/status. An authenticated service may still produce a semantically invalid response; client must validate it. Signature expiry is admission-time freshness, not a full execution deadline. Session and successful declaration lifecycle belongs to caller. No automatic retry. No Zenoh client, TLS session creation, ACL provisioning, router startup, global rate limiter, production key management or Android deployment in this stage. Transport confidentiality and ACL must be supplied by trusted deployment.
+
+API references reviewed: https://zenoh.io/docs/manual/access-control/ ; https://zenoh.io/docs/manual/tls/ ; https://zenoh-python.readthedocs.io/en/1.7.219-gb8c45c2/api_reference.html . Callback contract uses declare_queryable, query.key_expr, payload.to_bytes, reply and drop. Version compatibility is not established by the doubles. Do not label this a functioning Zenoh network integration until the real library and router are tested.
+
+SHA256 of final source and log:
+90fe65d2002e73bf45dd041a90d26675e55b39b62d3d834aa684dbc0a35f649c  omnicore_host/zenoh_boundary.py
+e1981ceb649465d6d86e2f69808777a6b0e3d23d2cd45229aeab599acc2b201c  tests/test_signed_zenoh.py
+8b0f179e7ad65e0494f0c5f9cfcc9ef626ae2b388010639d032aa42c279f7210  evidence/zenoh-boundary-green.log
