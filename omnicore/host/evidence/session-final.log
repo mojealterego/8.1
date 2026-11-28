@@ -1,0 +1,18 @@
+test_admission_limit_and_recovery (test_zenoh_session.LifecycleTests.test_admission_limit_and_recovery) ... ok
+test_callback_exception_releases_admission (test_zenoh_session.LifecycleTests.test_callback_exception_releases_admission) ... ok
+test_cleanup_failure_blocks_new_generation (test_zenoh_session.LifecycleTests.test_cleanup_failure_blocks_new_generation) ... ok
+test_close_failure_fences_and_blocks_factory (test_zenoh_session.LifecycleTests.test_close_failure_fences_and_blocks_factory) ... ok
+test_drain_timeout_blocks_new_session (test_zenoh_session.LifecycleTests.test_drain_timeout_blocks_new_session) ... ok
+test_early_callback_never_executes (test_zenoh_session.LifecycleTests.test_early_callback_never_executes) ... ok
+test_factory_failure_is_retryable (test_zenoh_session.LifecycleTests.test_factory_failure_is_retryable) ... ok
+test_invalid_lifecycle_parameters (test_zenoh_session.LifecycleTests.test_invalid_lifecycle_parameters) ... ok
+test_nominal_and_idempotent_stop (test_zenoh_session.LifecycleTests.test_nominal_and_idempotent_stop) ... ok
+test_reconfiguration_failure_does_not_restore_old_session (test_zenoh_session.LifecycleTests.test_reconfiguration_failure_does_not_restore_old_session) ... ok
+test_reconfigure_fences_old_callback (test_zenoh_session.LifecycleTests.test_reconfigure_fences_old_callback) ... ok
+test_registration_failure_closes_session (test_zenoh_session.LifecycleTests.test_registration_failure_closes_session) ... ok
+test_reconfigure_preserves_real_replay_and_signed_dispatch (test_zenoh_session_integration.IntegrationTests.test_reconfigure_preserves_real_replay_and_signed_dispatch) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.044s
+
+OK
