@@ -1,0 +1,19 @@
+# Zenoh ACL compiler — acceptance evidence
+
+Base main: 5d56df518cea999a3ecbaebf4941be85fcc1668a. User supplied zenoh-main.zip (SHA256 3d1b9e16d47b248b64e95ae621d5bf257477da89383ebf018b582f050191945b) and zenoh-acl-przewodnik.pdf (SHA256 e4c263fa2a513d98e932ae9e654ea3b43235d407c9208051a4924a8bbb0852a4). The archive Cargo.toml declares workspace version 1.10.2, rust-version 1.75.0; archive provenance is not established as an official release. Source inspection: DEFAULT_CONFIG.json5, commons/zenoh-config/src/lib.rs (AclConfigRule, AclConfigSubjects, AclConfigPolicyEntry, AclMessage), zenoh/src/net/routing/interceptor/access_control.rs, zenoh/tests/acl.rs. Guide pages 1–2 describe ACL matching, flows, CN and default deny. Actual source additionally supports link_protocols; the compiler requires TLS and CN together. No upstream source is copied into the repository.
+
+Design: dedicated single-hop router, separate service and client CNs, explicit numeric bind address, one logical node, one CN per peer/tenant, exact route coverage against the trusted SignedIngress.routes snapshot, no wildcard route, no pub/sub or liveliness grants. Use compile_router_config with trusted CN-to-route bindings, expected_routes=ingress.routes, and absolute PKI paths. Serialize the result with json.dumps. The compiler returns configuration data, not a running router. Router flow permissions: client ingress query and egress reply; service ingress declare_queryable/reply and egress query. This topology assumes separate connecting Zenoh clients and no local router app or federation. Real routing and declaration propagation must be validated before deployment. Default deny is mandatory. Router listener TLS only, mTLS required, discovery and admin space disabled, close on certificate expiry requested. Certificate ownership, uniqueness of CN across issued certificates, trust anchors, key storage, certificate revocation and peer-side configuration are external prerequisites. A new CN configuration removes the old CN grant; this is not actual certificate issuance, revocation, reload, or a live rotation. Requires controlled router restart and consistent application-level grants. SignedIngress remains necessary.
+
+Verification: local Linux x86_64, Python 3.13, pytest 9.0.2. RED: unittest failed on missing module, exit 1. GREEN: 12 tests, 0.003 s, exit 0. Independent pytest run: 12 passed in 0.04 s, exit 0. compileall exit 0. Reproduce from omnicore/host:
+```
+python3 -m unittest discover -s tests -p test_zenoh_acl.py -v
+python3 -m pytest -q tests/test_zenoh_acl.py
+python3 -m compileall -q omnicore_host/zenoh_acl.py tests/test_zenoh_acl.py
+```
+Mode DETERMINISTIC-SIMULATION for generated ACL evaluation: independent evaluator of exact-key singleton-CN rules only; 5 subjects x 3 protocols x 2 flows x 9 message kinds x 4 routes = 1080 cases; all assertions passed. No random seed; full Cartesian enumeration. Other tests exercise actual production generator, input validation, deterministic serialization, CN replacement and config structure. This does not execute Zenoh's Rust ACL interceptor or key-expression engine, validate the generated JSON through the real Zenoh parser, or establish transport interoperability. Existing earlier test suites not rerun. Cargo/rustc and Python zenoh module unavailable locally; archive contains Rust source, not a compiled router or vendored dependencies. No live router deployment, reconnect controller, certificate rotation or ARM32 build.
+
+SHA256:
+a057718d4ff69b155b50b2178fe6b968979e8044ab9e5a4589eb5432e96cf48e  omnicore_host/zenoh_acl.py
+289dfd908c8b847c98d7506c79b30a24e02466f83908cbeac55f6fd4ebc14a57  tests/test_zenoh_acl.py
+d9b222a963e183b92c2dc6d6a7c1edc80103afac76d6f0cdca5f9ad05c084891  evidence/acl-green.log
+6aa9c9e1c5a63ba848b4ce1692efc017a63b846c58afce7de57b14be6029793a  evidence/acl-red.log

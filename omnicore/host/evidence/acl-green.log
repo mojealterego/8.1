@@ -1,0 +1,17 @@
+test_bad_deployment_config (test_zenoh_acl.AclTests.test_bad_deployment_config) ... ok
+test_certificate_cn_rotation_replaces_permissions (test_zenoh_acl.AclTests.test_certificate_cn_rotation_replaces_permissions) ... ok
+test_deterministic (test_zenoh_acl.AclTests.test_deterministic) ... ok
+test_exhaustive_direction_matrix (test_zenoh_acl.AclTests.test_exhaustive_direction_matrix) ... ok
+test_ipv6_endpoint (test_zenoh_acl.AclTests.test_ipv6_endpoint) ... ok
+test_rejects_client_multi_identity (test_zenoh_acl.AclTests.test_rejects_client_multi_identity) ... ok
+test_rejects_duplicate_route_owner (test_zenoh_acl.AclTests.test_rejects_duplicate_route_owner) ... ok
+test_rejects_missing_or_extra_routes (test_zenoh_acl.AclTests.test_rejects_missing_or_extra_routes) ... ok
+test_rejects_node_mismatch (test_zenoh_acl.AclTests.test_rejects_node_mismatch) ... ok
+test_rejects_service_identity_collision (test_zenoh_acl.AclTests.test_rejects_service_identity_collision) ... ok
+test_rejects_wildcards_and_unknown_capability (test_zenoh_acl.AclTests.test_rejects_wildcards_and_unknown_capability) ... ok
+test_secure_transport (test_zenoh_acl.AclTests.test_secure_transport) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.003s
+
+OK
