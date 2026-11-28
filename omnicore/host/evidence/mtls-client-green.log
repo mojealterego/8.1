@@ -1,0 +1,16 @@
+test_actual_tls_exchange (test_mtls_client.ClientTests.test_actual_tls_exchange) ... ok
+test_bad_pin_pre_send (test_mtls_client.ClientTests.test_bad_pin_pre_send) ... ok
+test_bad_schema (test_mtls_client.ClientTests.test_bad_schema) ... ok
+test_correlated_denial (test_mtls_client.ClientTests.test_correlated_denial) ... ok
+test_hostname_pre_send (test_mtls_client.ClientTests.test_hostname_pre_send) ... ok
+test_invalid_request_before_connect (test_mtls_client.ClientTests.test_invalid_request_before_connect) ... ok
+test_numeric_address_only (test_mtls_client.ClientTests.test_numeric_address_only) ... ok
+test_refused_connection (test_mtls_client.ClientTests.test_refused_connection) ... ok
+test_response_correlation (test_mtls_client.ClientTests.test_response_correlation) ... ok
+test_timeout_after_dispatch_no_retry (test_mtls_client.ClientTests.test_timeout_after_dispatch_no_retry) ... ok
+test_truncated_response (test_mtls_client.ClientTests.test_truncated_response) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.774s
+
+OK
